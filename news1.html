@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- link rel="preconnect" href="https://fonts.googleapis.com"> -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+</head>
+
+<style>
+    body{
+        text-align: center;
+        /* background-image: url(""); */
+        background-color:ivory;
+    }
+    #data{
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-gap: 10px;
+        padding-left: 50px;
+        padding-right: 50px;
+        padding-top: 10px;
+        padding-bottom: 30px;
+        /* height: 120px; */
+    }
+    .main_div{
+        display: flex;
+        font-family: 'Righteous', cursive;
+        /* width: 400px; */
+        /* height: 120px; */
+        margin-left: 10px;
+        border: 1px solid grey;
+        background-color:mistyrose;
+        border-radius: 5%;
+    }
+    .main_div:nth-child(2n+1){
+        background-color:darkseagreen;
+        
+    }
+    .p_div{
+        width:48%;
+        margin-right: 2%;
+        text-align: left;
+        padding: 20px;
+    }
+    
+    .author{
+        color: gray;
+
+    }
+
+    .img_div{
+        width: 50%;
+        height: 80%;
+       margin-top: 8%;
+        
+        border-radius: 5%;
+      
+       /* border: 3px double gray; */
+       /* background-color: blue; */
+    }
+    /* .p_div{
+        width:50%;
+        height:100%;
+    } */
+    img{
+       width: 100%;
+       height: 100%; 
+       border-radius: 5%;
+      
+    }
+    .head{
+        display: flex;
+        text-align: center;
+        /* width: 1300px; */
+        /* margin-left: 600px; */
+    }
+    #news{
+        height: 100px;
+        width: 100px;
+        margin-left: 65px;
+
+    }
+    #news>img {
+        height: 100%;
+        width: 100%;
+    }
+    
+    .title{
+        color:teal;
+        font-size: 25px;
+        
+        font-family: 'Righteous', cursive;
+    }
+    #nav{
+        display: flex;
+        margin-left: 100px;
+        /* border: 1px solid black; */
+        height: 50px;
+    }
+    .page1{
+        font-size: larger;
+        font-weight: bold;
+        margin-right: 30px;
+        margin-top: 35px;
+        font-family: 'Righteous', cursive;
+        cursor: pointer;
+        /* border: 1px solid red; */
+        
+    }
+    
+    #search{
+        display: flex;
+        margin-top: 30px;
+        margin-left: 350px;
+        height: 40px;
+    }
+    input{
+        /* margin-right: 20px; */
+        border: 2px solid black;
+        border-radius: 3px;
+        
+    }
+    #search>button{
+        border: 2px solid black;
+        background-color: palevioletred;
+        font-size: large;
+        border-radius: 3px;
+    }
+    #search>button:hover{
+        background-color:orchid;
+        cursor: pointer;
+    }
+</style>
+
+<body>
+    <div class="head">
+        <div id="news">
+            <img src="https://image.flaticon.com/icons/png/512/21/21601.png" alt="">
+        </div>
+        <div id="nav">
+            <div class="page1"><a href="/sports.html"> Sports</a></div>
+            <div class="page1"><a href="/entertainment.html"> Entertainment</a></div>
+            <div class="page1"><a href="/tech.html"> Technology</a></div>
+        </div>
+        <div id="search">
+            <input type="text" id="name" placeholder="Search Here">
+            <button onclick="topic()">Search</button>
+        </div>
+        
+        
+    </div>
+    <hr>
+   <div id="data"></div> 
+   <div id="buttons"></div>
+</body>
+</html>
+
+<script>
+var data;
+var data_div = document.getElementById('data');
+    async function main(){
+        data = await getNews()
+        console.log(data);
+        showButtons(1)
+    }
+    main()
+   async function getNews(){
+       try{
+       let response = await fetch(`https://newsapi.org/v2/top-headlines?country=in&apiKey=f2c3c2f2d2464925b8d4040118a3db0e
+`)
+        let data = await response.json();
+        // console.log(data)
+        return data
+       }
+       catch(e){
+           console.log("e:",e)
+       }
+   }
+//    getNews();
+// function showButtons(index){
+// let buttons_div=document.getElementById(buttons)
+// }
+
+// function showData(index){
+//     let btn_div = document.getElementById('buttons');
+//     btn_div.innertext = 
+// }
+
+function showButtons(index){
+        let buttons_div = document.getElementById('buttons')
+        buttons_div.innerHTML = null
+
+
+        console.log('index:',index)
+
+
+        // if(index==0){
+        //     showNews();
+        // }
+
+        for(let i = 1; i<=2;i++){
+            let btn = document.createElement('button')
+            btn.innerText=i
+
+            btn.setAttribute('id',`${i}`)
+            btn.onclick= showNews
+
+             buttons_div.appendChild(btn)
+          
+        }
+    }
+    // showNews()
+    
+    function showNews(){
+     let id = Number(this.id)
+        // console.log('data:',data)
+        
+        let num = id-1
+        //slice the buttons 
+        let page_data = data.articles.slice(num*10,num*10 +10)
+        data_div.innerHTML=null
+        // console.log('page_data:',page_data)
+    
+        page_data.forEach(function(el){
+            let div = document.createElement('div')
+            div.setAttribute('class','main_div')
+
+            let p_div = document.createElement('div')
+            p_div.setAttribute('class', 'p_div')
+         
+            let title = document.createElement('p')
+            title.setAttribute('class','title')
+            title.innerText = `${el.title} `
+         
+            let author = document.createElement('p')
+            author.setAttribute('class','author')
+    
+            author.innerText = `${el.author} `
+        
+            let content = document.createElement('p')
+            content.setAttribute('class','content')
+            
+            content.innerText = `${el.content} `
+          
+            let img_div = document.createElement('div')
+            img_div.setAttribute('class','img_div')
+           
+            let img = document.createElement('img')
+            img.src = el.urlToImage
+          
+            p_div.append(title, content, author)
+            img_div.append(img)
+            div.append(p_div,img_div)
+            data_div.appendChild(div)
+        })
+
+        showButtons(id)
+    }
+
+    async function getNewsTopic() {
+      let name = document.getElementById("name").value;
+      try {
+        let n = await fetch(`https://newsapi.org/v2/everything?q=${name}&apiKey=eda520e6dd7f4287a76681766db95b84`);
+        data = await n.json();
+        //console.log(data);
+
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    async function topic() {
+      data = await getNewsTopic();
+      //console.log(data);
+    //   data = data.articles;
+      console.log(data);
+      showTopic();
+      showButtons(1)
+    }
+
+
+    function showTopic(){
+     let id = Number(this.id)
+        // console.log('data:',data)
+        
+        let num = id-1
+        //slice the buttons 
+        let page_data = data.articles.slice(num*10,num*10 +10)
+        data_div.innerHTML=null
+        // console.log('page_data:',page_data)
+    
+        page_data.forEach(function(el){
+            let div = document.createElement('div')
+            div.setAttribute('class','main_div')
+
+            let p_div = document.createElement('div')
+            p_div.setAttribute('class', 'p_div')
+         
+            let title = document.createElement('p')
+            title.setAttribute('class','title')
+            title.innerText = `${el.title} `
+         
+            let author = document.createElement('p')
+            author.setAttribute('class','author')
+    
+            author.innerText = `${el.author} `
+        
+            let content = document.createElement('p')
+            content.setAttribute('class','content')
+            
+            content.innerText = `${el.content} `
+          
+            let img_div = document.createElement('div')
+            img_div.setAttribute('class','img_div')
+           
+            let img = document.createElement('img')
+            img.src = el.urlToImage
+          
+            p_div.append(title, content, author)
+            img_div.append(img)
+            div.append(p_div,img_div)
+            data_div.appendChild(div)
+        })
+
+        showButtons(id)
+    }
+
+</script>
